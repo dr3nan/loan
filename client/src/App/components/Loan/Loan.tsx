@@ -46,6 +46,16 @@ export const Loan = () => {
     fetchUserData();
   }, []);
 
+  // create day change handler function
+
+  // create month change handler function
+
+  // create year change handler function
+
+  // create date change handler function
+
+  // create submit handler function
+
   return (
     <div>Loan</div>
   )
