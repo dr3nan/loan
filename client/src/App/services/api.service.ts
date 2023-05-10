@@ -6,8 +6,7 @@ export const getUserByID = async (userId: number) => {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'X-WEB-KEY': 'Development',
-        'Content-Type': 'application/json'
+        'X-WEB-KEY': 'Development'
       }
     });
     return response.json()
