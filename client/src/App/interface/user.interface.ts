@@ -1,5 +1,5 @@
 interface IUserData {
-  id: number;
+  id?: number;
   name: string;
   surname: string;
   email: string;

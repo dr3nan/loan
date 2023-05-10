@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+// import './App.css';
 import { Loan } from './components/Loan/Loan';
 
 function App() {
