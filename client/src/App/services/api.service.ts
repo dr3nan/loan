@@ -1,0 +1,1 @@
+const CLFRAMEWORK_URL = process.env.REACT_APP_CLFRAMEWORK_URL;
