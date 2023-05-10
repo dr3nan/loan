@@ -14,7 +14,7 @@ export const Loan = () => {
 
   const [loanData, setLoanData] = useState<ILoanData>({
     loan_amount: 0,
-    loan_date: '',
+    loan_date: new Date(),
     loan_weeks: 0,
   });
 
