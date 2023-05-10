@@ -4,11 +4,7 @@ interface IUserData {
   surname: string;
   email: string;
   phone: string;
-  age: {
-    day: number;
-    month: number;
-    year: number
-  };
+  age: number;
 }
 
 export default IUserData;

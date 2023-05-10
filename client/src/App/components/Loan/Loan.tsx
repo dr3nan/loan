@@ -12,7 +12,7 @@ export const Loan = () => {
     surname: '',
     email: '',
     phone: '',
-    age: { day: 0, month: 0, year: 0, },
+    age: 0,
   });
 
   const [loanData, setLoanData] = useState<ILoanData>({
@@ -41,11 +41,7 @@ export const Loan = () => {
         surname,
         email,
         phone,
-        age: {
-          day: new Date(age).getDate(),
-          month: new Date(age).getMonth() + 1,
-          year: new Date(age).getFullYear()
-        }
+        age
       });
     };
     fetchUserData();
@@ -108,16 +104,57 @@ export const Loan = () => {
       </label>
       <label htmlFor='age'>
         Edad
-        <input type='number' name='day' id='day' value={userData.age.day} required />
-        <select name='month' id='month' value={userData.age.month} required>
-          {[...Array(12)].map((_, index) => (
-            <option key={index} value={index + 1}>
-              {index + 1}
-            </option>
-          ))}
-        </select>
-        <input type='number' name='year' id='year' value={userData.age.year} required />
+        <input
+          type='number'
+          name='age'
+          id='age'
+          value={userData.age}
+          required />
       </label>
+      <label htmlFor='loan_amount'>
+        Importe del préstamo
+        <input
+          type='number'
+          min={10}
+          max={1000}
+          step={0.01}
+          name='loan_amount'
+          id='loan_amount'
+          value={loanData.loan_amount}
+          required />
+      </label>
+      <label htmlFor='loan_date'>
+        Fecha a conseguir el prestamo
+        <DatePicker
+          selected={loanData.loan_date}
+          minDate={new Date()}
+          onChange={(date: Date) => setLoanData({ ...loanData, loan_date: date })}
+          dateFormat='yyy-;;-dd'
+          required />
+      </label>
+      <label htmlFor='loan_weeks'>
+        Tiempo a devolver (en semanas)
+        <input
+          type='number'
+          min={1}
+          max={20}
+          step={1}
+          name='loan_weeks'
+          id='loan_weeks'
+          value={loanData.loan_weeks}
+          required />
+      </label>
+      <div>
+        <label htmlFor='check-box'>
+          <input
+            type='checkbox'
+            name='check-box'
+            id='check-box'
+            required />
+          Aceptar términos y condiciones
+        </label>
+      </div>
+      <button type='submit'>Enviar Solicitud</button>
     </form>
   )
 }
