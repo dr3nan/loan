@@ -29,6 +29,10 @@ export const Loan = () => {
       // create try catch block to handle GET errors
       try {
         const response = await getUserByID(userId);
+        if (response.status !== 200) {
+          const errorData = await response.json();
+          throw new Error (`${response.status} ${errorData.code}`)
+        };
 
         const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
         setUserLoanData({
@@ -43,8 +47,8 @@ export const Loan = () => {
           loan_weeks,
           check,
         });
-      } catch (error) {
-
+      } catch (err: any) {
+        setGetError(`Response error: Status ${err.message}`);
       }
     };
     fetchUserData();
@@ -60,7 +64,16 @@ export const Loan = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // create try catch block to handle POST errors
-    await updateUser(userLoanData);
+    try {
+      const response = await updateUser(userLoanData);
+      if (response.status !== 200) {
+        const errorData = await response.json();
+        throw new Error (`${response.status} ${errorData.code}`)
+      };
+      setSuccess(true);
+    } catch (err: any) {
+      setPostError(`Response error: Status ${err.message}`);
+    }
   };
 
   return (
