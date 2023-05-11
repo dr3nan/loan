@@ -17,6 +17,9 @@ export const Loan = () => {
     loan_weeks: 0,
     check: false,
   });
+  const [getError, setGetError] = useState<string>('');
+  const [postError, setPostError] = useState<string>('');
+  const [success, setSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,22 +27,25 @@ export const Loan = () => {
       let userId = Number(urlParams.get('id'));
       userId = 1;
       // create try catch block to handle GET errors
+      try {
+        const response = await getUserByID(userId);
 
-      const response = await getUserByID(userId);
+        const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
+        setUserLoanData({
+          id,
+          name,
+          surname,
+          email,
+          phone,
+          age,
+          loan_amount,
+          loan_date: new Date(),
+          loan_weeks,
+          check,
+        });
+      } catch (error) {
 
-      const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
-      setUserLoanData({
-        id,
-        name,
-        surname,
-        email,
-        phone,
-        age,
-        loan_amount,
-        loan_date: new Date(),
-        loan_weeks,
-        check,
-      });
+      }
     };
     fetchUserData();
   }, []);
