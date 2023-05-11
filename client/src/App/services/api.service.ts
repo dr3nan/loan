@@ -1,11 +1,11 @@
-import ILoanData from '../interface/loan.interface';
-import IUserData from '../interface/user.interface';
+import IUserLoanData from '../interface/userLoan.interface';
 
-const BASE_URL = 'https://api7.cloudframework.io/recruitment/fullstack/users?id=';
+const BASE_GET_URL = 'https://api7.cloudframework.io/recruitment/fullstack/users?id=';
+const BASE_POST_URL = 'https://api7.cloudframework.io/recruitment/fullstack/users/';
 
 export const getUserByID = async (userId: number) => {
   try {
-    const url = `${BASE_URL}${userId}`;
+    const url = `${BASE_GET_URL}${userId}`;
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -19,11 +19,11 @@ export const getUserByID = async (userId: number) => {
   }
 };
 
-export const updateUser = async (user: IUserData, loan: ILoanData) => {
-  console.log('user', user);
-  console.log('loan', loan);
+export const updateUser = async (userData: IUserLoanData) => {
+  console.log('user', userData);
+  console.log('user id', userData.id);
   try {
-    const url = `${BASE_URL}${user.id}`;
+    const url = `${BASE_POST_URL}${userData.id}`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -31,8 +31,7 @@ export const updateUser = async (user: IUserData, loan: ILoanData) => {
         'X-WEB-KEY': 'Development'
       },
       body: JSON.stringify({
-        ...user,
-        ...loan
+        ...userData
       })
     });
 

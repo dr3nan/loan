@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import IUserData from '../../interface/user.interface';
-import ILoanData from '../../interface/loan.interface';
+import IUserLoanData from '../../interface/userLoan.interface';
 import { getUserByID, updateUser } from '../../services/api.service';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export const Loan = () => {
-  const [userData, setUserData] = useState<IUserData>({
+  const [userLoanData, setUserLoanData] = useState<IUserLoanData>({
     id: 0,
     name: '',
     surname: '',
     email: '',
     phone: '',
     age: 0,
-  });
-
-  const [loanData, setLoanData] = useState<ILoanData>({
     loan_amount: 0,
     loan_date: new Date(),
     loan_weeks: 0,
+    check: false,
   });
 
   useEffect(() => {
@@ -34,14 +31,18 @@ export const Loan = () => {
 
       console.log('response in FE', response.data);
       // deconstruct response object
-      const { id, name, surname, email, phone, age } = await response.data;
-      setUserData({
+      const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
+      setUserLoanData({
         id,
         name,
         surname,
         email,
         phone,
-        age
+        age,
+        loan_amount,
+        loan_date: new Date(),
+        loan_weeks,
+        check,
       });
     };
     fetchUserData();
@@ -49,8 +50,8 @@ export const Loan = () => {
 
   // create loan date change handler function
   const handleLoanDateChange = (date: Date) => {
-    setLoanData({
-      ...loanData,
+    setUserLoanData({
+      ...userLoanData,
       loan_date: date
     });
   };
@@ -59,7 +60,7 @@ export const Loan = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const response = await updateUser(userData, loanData);
+    const response = await updateUser(userLoanData);
     console.log('response POST', response);
     // if (!response) {
     //   throw new Error(`${response.status} ${response.code}`);
@@ -78,7 +79,7 @@ export const Loan = () => {
           type='text'
           name='name'
           id='name'
-          value={userData.name}
+          value={userLoanData.name}
           readOnly
         />
       </label>
@@ -88,7 +89,7 @@ export const Loan = () => {
           type='text'
           name='surname'
           id='surname'
-          value={userData.surname}
+          value={userLoanData.surname}
           readOnly
         />
       </label>
@@ -98,7 +99,7 @@ export const Loan = () => {
           type='email'
           name='email'
           id='email'
-          value={userData.email}
+          value={userLoanData.email}
           readOnly
         />
       </label>
@@ -108,8 +109,8 @@ export const Loan = () => {
           type='tel'
           name='phone'
           id='phone'
-          value={userData.phone}
-          onChange={(event) => setUserData({ ...userData, phone: event.target.value })}
+          value={userLoanData.phone}
+          onChange={(event) => setUserLoanData({ ...userLoanData, phone: event.target.value })}
           required
         />
       </label>
@@ -121,8 +122,8 @@ export const Loan = () => {
           id='age'
           min={18}
           max={120}
-          value={userData.age}
-          onChange={(event) => setUserData({ ...userData, age: Number(event.target.value) })}
+          value={userLoanData.age}
+          onChange={(event) => setUserLoanData({ ...userLoanData, age: Number(event.target.value) })}
           required
         />
       </label>
@@ -130,20 +131,20 @@ export const Loan = () => {
         Importe del préstamo
         <input
           type='number'
-          min={10}
+          min={11}
           max={1000}
           step={1}
           name='loan_amount'
           id='loan_amount'
-          value={loanData.loan_amount}
-          onChange={(event) => setLoanData({ ...loanData, loan_amount: Number(event.target.value) })}
+          value={userLoanData.loan_amount}
+          onChange={(event) => setUserLoanData({ ...userLoanData, loan_amount: Number(event.target.value) })}
           required
         />
       </label>
       <label htmlFor='loan_date'>
         Fecha a conseguir el prestamo
         <DatePicker
-          selected={loanData.loan_date}
+          selected={userLoanData.loan_date}
           minDate={new Date()}
           onChange={handleLoanDateChange}
           dateFormat='yyy-MM-dd'
@@ -159,8 +160,8 @@ export const Loan = () => {
           step={1}
           name='loan_weeks'
           id='loan_weeks'
-          value={loanData.loan_weeks}
-          onChange={(event) => setLoanData({ ...loanData, loan_weeks: Number(event.target.value) })}
+          value={userLoanData.loan_weeks}
+          onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: Number(event.target.value) })}
           required
         />
       </label>
@@ -168,8 +169,10 @@ export const Loan = () => {
         <label htmlFor='check-box'>
           <input
             type='checkbox'
-            name='check-box'
-            id='check-box'
+            name='check'
+            id='check'
+            checked={userLoanData.check}
+            onChange={(event) => setUserLoanData({ ...userLoanData, check: event.target.checked })}
             // add a link to terms and conditions page with link https://cloudframework.io/terminos-y-condiciones/
             required
           />
