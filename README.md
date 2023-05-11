@@ -18,13 +18,13 @@ Once I have finished basic logic of the app, I proceed to create a feature branc
 
 I test if the behaviour of the app is correct and follows with requirements, once happy with the results I proceed to work on the styling of the app, as I am nearing the end of the process, I look for unnecessary code or some leftover logs and clean them.
 
-That's my approach to creating this app in particular.
+That's the approache I have taken to create this app.
 
 ##### REMARKS
 
 As an improvement, the code of the form could be splitted in two, create another component that would hold all the JSX for the responses and pass state and functions as props.
 
-Perhaps install axios library would have given a bit more flexibility when error handling and such.
+Perhaps installing axios library would have given a bit more flexibility when error handling and such.
 
 ##### SUGGESTIONS
 
