@@ -3,6 +3,8 @@ import IUserLoanData from '../../interface/userLoan.interface';
 import { getUserByID, updateUser } from '../../services/api.service';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './loan.scss';
+import './response.scss';
 
 export const Loan = () => {
   const [userLoanData, setUserLoanData] = useState<IUserLoanData>({
@@ -25,10 +27,10 @@ export const Loan = () => {
     const fetchUserData = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       let userId = Number(urlParams.get('id'));
-      userId = 1;
-      // create try catch block to handle GET errors
+
       try {
-        const response = await getUserByID(userId);
+        // for local testing, change getUserByID(1) to getUserByID(userId)
+        const response = await getUserByID(1);
         if (response.status !== 200) {
           throw new Error(`${response.status} ${response.errors}`)
         };
@@ -48,39 +50,40 @@ export const Loan = () => {
         });
         setGetError('');
       } catch (err: any) {
-        setGetError(`Response error: Status ${err.message}`);
+        setGetError(`Response error: ${err.message}`);
       }
     };
     fetchUserData();
   }, []);
 
-  const handleLoanDateChange = (date: Date) => {
-    setUserLoanData({
-      ...userLoanData,
-      loan_date: date,
-    });
+  const handleLoanDateChange = (date: Date | null) => {
+    if (date) {
+      setUserLoanData({
+        ...userLoanData,
+        loan_date: date,
+      });
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // create try catch block to handle POST errors
     try {
       const response = await updateUser(userLoanData);
       if (response.status !== 201) {
-        throw new Error(`${response.status} ${response.errors}`)
+        throw new Error(`${response.errors}`)
       };
       setSuccess(true);
       setPostError('');
     } catch (err: any) {
       setSuccess(false);
-      setPostError(`Response error: Status ${err.message}`);
+      setPostError(`Response error: ${err.message}`);
     }
   };
 
   return (
-    <div>
+    <main className='form-container'>
       {getError ? (
-        <div className='error'>
+        <div className='error-get'>
           <h1>Ha ocurrido un error</h1>
           <p>{getError}</p>
         </div>
@@ -101,7 +104,7 @@ export const Loan = () => {
           <p>En breve nos pondremos en contacto contigo.</p>
         </div>
       ) : postError ? (
-        <div className='error'>
+        <div className='error-post'>
           <h1>Ha ocurrido un error</h1>
           <p>{postError}</p>
           <button onClick={() => setPostError('')}>Volver</button>
@@ -112,104 +115,113 @@ export const Loan = () => {
         >
           <label htmlFor='name'>
             Nombre
-            <input
-              type='text'
-              name='name'
-              id='name'
-              value={userLoanData.name}
-              readOnly
-            />
           </label>
+          <input
+            type='text'
+            name='name'
+            id='name'
+            value={userLoanData.name}
+            className='name'
+            readOnly
+          />
           <label htmlFor='surname'>
             Apellido
-            <input
-              type='text'
-              name='surname'
-              id='surname'
-              value={userLoanData.surname}
-              readOnly
-            />
           </label>
+          <input
+            type='text'
+            name='surname'
+            id='surname'
+            value={userLoanData.surname}
+            className='surname'
+            readOnly
+          />
           <label htmlFor='email'>
             Email
-            <input
-              type='email'
-              name='email'
-              id='email'
-              value={userLoanData.email}
-              readOnly
-            />
           </label>
+          <input
+            type='email'
+            name='email'
+            id='email'
+            value={userLoanData.email}
+            className='email'
+            readOnly
+          />
           <label htmlFor='phone'>
             Teléfono
-            <input
-              type='tel'
-              name='phone'
-              id='phone'
-              value={userLoanData.phone}
-              onChange={(event) => setUserLoanData({ ...userLoanData, phone: event.target.value })}
-              required
-            />
           </label>
+          <input
+            type='tel'
+            name='phone'
+            id='phone'
+            value={userLoanData.phone}
+            onChange={(event) => setUserLoanData({ ...userLoanData, phone: event.target.value })}
+            className='phone'
+            required
+          />
           <label htmlFor='age'>
             Edad
-            <input
-              type='number'
-              name='age'
-              id='age'
-              min={18}
-              max={120}
-              value={userLoanData.age}
-              onChange={(event) => setUserLoanData({ ...userLoanData, age: Number(event.target.value) })}
-              required
-            />
           </label>
+          <input
+            type='number'
+            name='age'
+            id='age'
+            min={18}
+            max={120}
+            value={userLoanData.age}
+            onChange={(event) => setUserLoanData({ ...userLoanData, age: Number(event.target.value) })}
+            className='age'
+            required
+          />
           <label htmlFor='loan_amount'>
             Importe del préstamo
-            <input
-              type='number'
-              min={11}
-              max={1000}
-              step={1}
-              name='loan_amount'
-              id='loan_amount'
-              value={userLoanData.loan_amount}
-              onChange={(event) => setUserLoanData({ ...userLoanData, loan_amount: parseFloat(event.target.value) })}
-              required
-            />
           </label>
+          <input
+            type='number'
+            min={11}
+            max={1000}
+            step={1}
+            name='loan_amount'
+            id='loan_amount'
+            value={userLoanData.loan_amount}
+            onChange={(event) => setUserLoanData({ ...userLoanData, loan_amount: parseFloat(event.target.value) })}
+            className='loan_amount'
+            required
+          />
           <label htmlFor='loan_date'>
-            Fecha a conseguir el prestamo
-            <DatePicker
-              selected={userLoanData.loan_date}
-              minDate={new Date()}
-              onChange={handleLoanDateChange}
-              dateFormat='yyy-MM-dd'
-              required
-            />
+            Fecha a conseguir el préstamo
           </label>
+          <DatePicker
+            selected={userLoanData.loan_date}
+            minDate={new Date()}
+            onChange={handleLoanDateChange}
+            dateFormat='yyy-MM-dd'
+            className='loan_date'
+            required
+          />
           <label htmlFor='loan_weeks'>
             Tiempo a devolver (en semanas)
-            <input
-              type='number'
-              min={1}
-              max={20}
-              step={1}
-              name='loan_weeks'
-              id='loan_weeks'
-              value={userLoanData.loan_weeks}
-              onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: Number(event.target.value) })}
-              required
-            />
           </label>
-          <div>
-            <label htmlFor='check-box'>
+          <input
+            type='number'
+            min={1}
+            max={20}
+            step={1}
+            name='loan_weeks'
+            id='loan_weeks'
+            value={userLoanData.loan_weeks}
+            onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: Number(event.target.value) })}
+            className='loan_weeks'
+            required
+          />
+          <div className='checkbox'>
+            <label htmlFor='checkbox-label'>
               <input
                 type='checkbox'
                 name='check'
                 id='check'
                 checked={userLoanData.check}
                 onChange={(event) => setUserLoanData({ ...userLoanData, check: event.target.checked })}
+                className='checkbox-input'
                 required
               />
               Aceptar{' '}
@@ -218,13 +230,18 @@ export const Loan = () => {
                 target='_blank'
                 rel='noreferrer'
               >
-                términos y condiciones
+                Términos y Condiciones
               </a>
             </label>
           </div>
-          <button type='submit'>Enviar Solicitud</button>
+          <button
+            type='submit'
+            className='submit-button'
+          >
+            Enviar Solicitud
+          </button>
         </form>
       )}
-    </div>
+    </main>
   )
 };
