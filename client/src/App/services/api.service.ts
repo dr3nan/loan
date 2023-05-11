@@ -21,8 +21,6 @@ export const getUserByID = async (userId: number) => {
 };
 
 export const updateUser = async (userData: IUserLoanData) => {
-  console.log('user', userData);
-  console.log('user id', userData.id);
   try {
     const formattedLoanDate = dateFormat(userData.loan_date);
     const url = `${BASE_POST_URL}${userData.id}`;
@@ -37,10 +35,6 @@ export const updateUser = async (userData: IUserLoanData) => {
         loan_date: formattedLoanDate
       })
     });
-
-    if (!response.ok) {
-      throw new Error('Error updating user');
-    }
 
     return await response.json();
   } catch (err) {

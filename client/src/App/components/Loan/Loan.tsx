@@ -7,7 +7,7 @@ import './loan.scss';
 
 export const Loan = () => {
   const [userLoanData, setUserLoanData] = useState<IUserLoanData>({
-    id: 0,
+    id: 1,
     name: '',
     surname: '',
     email: '',
@@ -68,7 +68,7 @@ export const Loan = () => {
     try {
       const response = await updateUser(userLoanData);
       if (response.status !== 201) {
-        throw new Error(`${response.status} ${response.errors}`)
+        throw new Error(`${response.errors}`)
       };
       setSuccess(true);
       setPostError('');
@@ -81,7 +81,7 @@ export const Loan = () => {
   return (
     <main className='form-container'>
       {getError ? (
-        <div className='error'>
+        <div className='error-get'>
           <h1>Ha ocurrido un error</h1>
           <p>{getError}</p>
         </div>
@@ -102,7 +102,7 @@ export const Loan = () => {
           <p>En breve nos pondremos en contacto contigo.</p>
         </div>
       ) : postError ? (
-        <div className='error'>
+        <div className='error-post'>
           <h1>Ha ocurrido un error</h1>
           <p>{postError}</p>
           <button onClick={() => setPostError('')}>Volver</button>
