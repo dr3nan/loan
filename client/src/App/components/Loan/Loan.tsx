@@ -30,8 +30,7 @@ export const Loan = () => {
       try {
         const response = await getUserByID(userId);
         if (response.status !== 200) {
-          const errorData = await response.json();
-          throw new Error (`${response.status} ${errorData.code}`)
+          throw new Error(`${response.status} ${response.errors}`)
         };
 
         const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
@@ -47,6 +46,7 @@ export const Loan = () => {
           loan_weeks,
           check,
         });
+        setGetError('');
       } catch (err: any) {
         setGetError(`Response error: Status ${err.message}`);
       }
@@ -66,127 +66,165 @@ export const Loan = () => {
     // create try catch block to handle POST errors
     try {
       const response = await updateUser(userLoanData);
-      if (response.status !== 200) {
-        const errorData = await response.json();
-        throw new Error (`${response.status} ${errorData.code}`)
+      if (response.status !== 201) {
+        throw new Error(`${response.status} ${response.errors}`)
       };
       setSuccess(true);
+      setPostError('');
     } catch (err: any) {
+      setSuccess(false);
       setPostError(`Response error: Status ${err.message}`);
     }
   };
 
   return (
-    <form className='user-details-form'
-      onSubmit={handleSubmit}
-    >
-      <label htmlFor='name'>
-        Nombre
-        <input
-          type='text'
-          name='name'
-          id='name'
-          value={userLoanData.name}
-          readOnly
-        />
-      </label>
-      <label htmlFor='surname'>
-        Apellido
-        <input
-          type='text'
-          name='surname'
-          id='surname'
-          value={userLoanData.surname}
-          readOnly
-        />
-      </label>
-      <label htmlFor='email'>
-        Email
-        <input
-          type='email'
-          name='email'
-          id='email'
-          value={userLoanData.email}
-          readOnly
-        />
-      </label>
-      <label htmlFor='phone'>
-        Teléfono
-        <input
-          type='tel'
-          name='phone'
-          id='phone'
-          value={userLoanData.phone}
-          onChange={(event) => setUserLoanData({ ...userLoanData, phone: event.target.value })}
-          required
-        />
-      </label>
-      <label htmlFor='age'>
-        Edad
-        <input
-          type='number'
-          name='age'
-          id='age'
-          min={18}
-          max={120}
-          value={userLoanData.age}
-          onChange={(event) => setUserLoanData({ ...userLoanData, age: Number(event.target.value) })}
-          required
-        />
-      </label>
-      <label htmlFor='loan_amount'>
-        Importe del préstamo
-        <input
-          type='number'
-          min={11}
-          max={1000}
-          step={1}
-          name='loan_amount'
-          id='loan_amount'
-          value={userLoanData.loan_amount}
-          onChange={(event) => setUserLoanData({ ...userLoanData, loan_amount: Number(event.target.value) })}
-          required
-        />
-      </label>
-      <label htmlFor='loan_date'>
-        Fecha a conseguir el prestamo
-        <DatePicker
-          selected={userLoanData.loan_date}
-          minDate={new Date()}
-          onChange={handleLoanDateChange}
-          dateFormat='yyy-MM-dd'
-          required
-        />
-      </label>
-      <label htmlFor='loan_weeks'>
-        Tiempo a devolver (en semanas)
-        <input
-          type='number'
-          min={1}
-          max={20}
-          step={1}
-          name='loan_weeks'
-          id='loan_weeks'
-          value={userLoanData.loan_weeks}
-          onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: Number(event.target.value) })}
-          required
-        />
-      </label>
-      <div>
-        <label htmlFor='check-box'>
-          <input
-            type='checkbox'
-            name='check'
-            id='check'
-            checked={userLoanData.check}
-            onChange={(event) => setUserLoanData({ ...userLoanData, check: event.target.checked })}
-            // add a link to terms and conditions page with link https://cloudframework.io/terminos-y-condiciones/
-            required
-          />
-          Aceptar términos y condiciones
-        </label>
-      </div>
-      <button type='submit'>Enviar Solicitud</button>
-    </form>
+    <div>
+      {getError ? (
+        <div className='error'>
+          <h1>Ha ocurrido un error</h1>
+          <p>{getError}</p>
+        </div>
+      ) : success ? (
+        <div className='success'>
+          <h1>¡Gracias por tu solicitud {userLoanData.name}!</h1>
+          <p>A continuación te mostramos un resumen de los datos enviados:</p>
+          <ul>
+            <li>Nombre: {userLoanData.name}</li>
+            <li>Apellido: {userLoanData.surname}</li>
+            <li>Email: {userLoanData.email}</li>
+            <li>Teléfono: {userLoanData.phone}</li>
+            <li>Edad: {userLoanData.age}</li>
+            <li>Importe del préstamo: € {userLoanData.loan_amount.toFixed(2)}</li>
+            <li>Fecha a conseguir el préstamo: {userLoanData.loan_date.toLocaleDateString()}</li>
+            <li>Tiempo a devolver (en semanas): {userLoanData.loan_weeks}</li>
+          </ul>
+          <p>En breve nos pondremos en contacto contigo.</p>
+        </div>
+      ) : postError ? (
+        <div className='error'>
+          <h1>Ha ocurrido un error</h1>
+          <p>{postError}</p>
+          <button onClick={() => setPostError('')}>Volver</button>
+        </div>
+      ) : (
+        <form className='user-details-form'
+          onSubmit={handleSubmit}
+        >
+          <label htmlFor='name'>
+            Nombre
+            <input
+              type='text'
+              name='name'
+              id='name'
+              value={userLoanData.name}
+              readOnly
+            />
+          </label>
+          <label htmlFor='surname'>
+            Apellido
+            <input
+              type='text'
+              name='surname'
+              id='surname'
+              value={userLoanData.surname}
+              readOnly
+            />
+          </label>
+          <label htmlFor='email'>
+            Email
+            <input
+              type='email'
+              name='email'
+              id='email'
+              value={userLoanData.email}
+              readOnly
+            />
+          </label>
+          <label htmlFor='phone'>
+            Teléfono
+            <input
+              type='tel'
+              name='phone'
+              id='phone'
+              value={userLoanData.phone}
+              onChange={(event) => setUserLoanData({ ...userLoanData, phone: event.target.value })}
+              required
+            />
+          </label>
+          <label htmlFor='age'>
+            Edad
+            <input
+              type='number'
+              name='age'
+              id='age'
+              min={18}
+              max={120}
+              value={userLoanData.age}
+              onChange={(event) => setUserLoanData({ ...userLoanData, age: Number(event.target.value) })}
+              required
+            />
+          </label>
+          <label htmlFor='loan_amount'>
+            Importe del préstamo
+            <input
+              type='number'
+              min={11}
+              max={1000}
+              step={1}
+              name='loan_amount'
+              id='loan_amount'
+              value={userLoanData.loan_amount}
+              onChange={(event) => setUserLoanData({ ...userLoanData, loan_amount: parseFloat(event.target.value) })}
+              required
+            />
+          </label>
+          <label htmlFor='loan_date'>
+            Fecha a conseguir el prestamo
+            <DatePicker
+              selected={userLoanData.loan_date}
+              minDate={new Date()}
+              onChange={handleLoanDateChange}
+              dateFormat='yyy-MM-dd'
+              required
+            />
+          </label>
+          <label htmlFor='loan_weeks'>
+            Tiempo a devolver (en semanas)
+            <input
+              type='number'
+              min={1}
+              max={20}
+              step={1}
+              name='loan_weeks'
+              id='loan_weeks'
+              value={userLoanData.loan_weeks}
+              onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: Number(event.target.value) })}
+              required
+            />
+          </label>
+          <div>
+            <label htmlFor='check-box'>
+              <input
+                type='checkbox'
+                name='check'
+                id='check'
+                checked={userLoanData.check}
+                onChange={(event) => setUserLoanData({ ...userLoanData, check: event.target.checked })}
+                required
+              />
+              Aceptar{' '}
+              <a
+                href='https://cloudframework.io/terminos-y-condiciones/'
+                target='_blank'
+                rel='noreferrer'
+              >
+                términos y condiciones
+              </a>
+            </label>
+          </div>
+          <button type='submit'>Enviar Solicitud</button>
+        </form>
+      )}
+    </div>
   )
-}
+};
