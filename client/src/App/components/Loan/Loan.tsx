@@ -186,7 +186,7 @@ export const Loan = () => {
             required
           />
           <label htmlFor='loan_date'>
-            Fecha a conseguir el prestamo
+            Fecha a conseguir el préstamo
           </label>
           <DatePicker
             selected={userLoanData.loan_date}
@@ -211,15 +211,15 @@ export const Loan = () => {
             className='loan_weeks'
             required
           />
-          <div>
-            <label htmlFor='check-box'>
+          <div className='checkbox'>
+            <label htmlFor='checkbox-label'>
               <input
                 type='checkbox'
                 name='check'
                 id='check'
                 checked={userLoanData.check}
                 onChange={(event) => setUserLoanData({ ...userLoanData, check: event.target.checked })}
-                className='check-box'
+                className='checkbox-input'
                 required
               />
               Aceptar{' '}
