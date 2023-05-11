@@ -10,7 +10,7 @@ Read all the requirements of the task at hand and understanding what is needed, 
 
 I started the process by thinking about the structure of the app, the tools I was goign to use, and installing all needed dependencies. Since is such small project, I create a development branch to maintain main branch clean.
 
-Committing often is key to maintain good practices and make makes turning back from an error easier.
+Committing often is key to maintain good practices and makes turning back from an error, easier.
 
 I follow by creating a development branch and work in said branch. My first approach is to create basic components, and their styling file. If I am using TypeScript I create the interfaces and I start building the app. Create some state and create minimal handlers and helpers to be able to run the app.
 
