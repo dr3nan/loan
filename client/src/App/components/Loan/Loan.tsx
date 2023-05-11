@@ -4,10 +4,11 @@ import { getUserByID, updateUser } from '../../services/api.service';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './loan.scss';
+import './response.scss';
 
 export const Loan = () => {
   const [userLoanData, setUserLoanData] = useState<IUserLoanData>({
-    id: 1,
+    id: 0,
     name: '',
     surname: '',
     email: '',
@@ -26,10 +27,10 @@ export const Loan = () => {
     const fetchUserData = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       let userId = Number(urlParams.get('id'));
-      userId = 1;
-      // create try catch block to handle GET errors
+
       try {
-        const response = await getUserByID(userId);
+        // for local testing, change getUserByID(1) to getUserByID(userId)
+        const response = await getUserByID(1);
         if (response.status !== 200) {
           throw new Error(`${response.status} ${response.errors}`)
         };
@@ -49,22 +50,23 @@ export const Loan = () => {
         });
         setGetError('');
       } catch (err: any) {
-        setGetError(`Response error: Status ${err.message}`);
+        setGetError(`Response error: ${err.message}`);
       }
     };
     fetchUserData();
   }, []);
 
-  const handleLoanDateChange = (date: Date) => {
-    setUserLoanData({
-      ...userLoanData,
-      loan_date: date,
-    });
+  const handleLoanDateChange = (date: Date | null) => {
+    if (date) {
+      setUserLoanData({
+        ...userLoanData,
+        loan_date: date,
+      });
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // create try catch block to handle POST errors
     try {
       const response = await updateUser(userLoanData);
       if (response.status !== 201) {
@@ -74,7 +76,7 @@ export const Loan = () => {
       setPostError('');
     } catch (err: any) {
       setSuccess(false);
-      setPostError(`Response error: Status ${err.message}`);
+      setPostError(`Response error: ${err.message}`);
     }
   };
 
