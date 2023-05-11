@@ -3,6 +3,7 @@ import IUserLoanData from '../../interface/userLoan.interface';
 import { getUserByID, updateUser } from '../../services/api.service';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './loan.scss';
 
 export const Loan = () => {
   const [userLoanData, setUserLoanData] = useState<IUserLoanData>({
@@ -78,7 +79,7 @@ export const Loan = () => {
   };
 
   return (
-    <div>
+    <main className='form-container'>
       {getError ? (
         <div className='error'>
           <h1>Ha ocurrido un error</h1>
@@ -112,96 +113,104 @@ export const Loan = () => {
         >
           <label htmlFor='name'>
             Nombre
-            <input
-              type='text'
-              name='name'
-              id='name'
-              value={userLoanData.name}
-              readOnly
-            />
           </label>
+          <input
+            type='text'
+            name='name'
+            id='name'
+            value={userLoanData.name}
+            className='name'
+            readOnly
+          />
           <label htmlFor='surname'>
             Apellido
-            <input
-              type='text'
-              name='surname'
-              id='surname'
-              value={userLoanData.surname}
-              readOnly
-            />
           </label>
+          <input
+            type='text'
+            name='surname'
+            id='surname'
+            value={userLoanData.surname}
+            className='surname'
+            readOnly
+          />
           <label htmlFor='email'>
             Email
-            <input
-              type='email'
-              name='email'
-              id='email'
-              value={userLoanData.email}
-              readOnly
-            />
           </label>
+          <input
+            type='email'
+            name='email'
+            id='email'
+            value={userLoanData.email}
+            className='email'
+            readOnly
+          />
           <label htmlFor='phone'>
             Teléfono
-            <input
-              type='tel'
-              name='phone'
-              id='phone'
-              value={userLoanData.phone}
-              onChange={(event) => setUserLoanData({ ...userLoanData, phone: event.target.value })}
-              required
-            />
           </label>
+          <input
+            type='tel'
+            name='phone'
+            id='phone'
+            value={userLoanData.phone}
+            onChange={(event) => setUserLoanData({ ...userLoanData, phone: event.target.value })}
+            className='phone'
+            required
+          />
           <label htmlFor='age'>
             Edad
-            <input
-              type='number'
-              name='age'
-              id='age'
-              min={18}
-              max={120}
-              value={userLoanData.age}
-              onChange={(event) => setUserLoanData({ ...userLoanData, age: Number(event.target.value) })}
-              required
-            />
           </label>
+          <input
+            type='number'
+            name='age'
+            id='age'
+            min={18}
+            max={120}
+            value={userLoanData.age}
+            onChange={(event) => setUserLoanData({ ...userLoanData, age: Number(event.target.value) })}
+            className='age'
+            required
+          />
           <label htmlFor='loan_amount'>
             Importe del préstamo
-            <input
-              type='number'
-              min={11}
-              max={1000}
-              step={1}
-              name='loan_amount'
-              id='loan_amount'
-              value={userLoanData.loan_amount}
-              onChange={(event) => setUserLoanData({ ...userLoanData, loan_amount: parseFloat(event.target.value) })}
-              required
-            />
           </label>
+          <input
+            type='number'
+            min={11}
+            max={1000}
+            step={1}
+            name='loan_amount'
+            id='loan_amount'
+            value={userLoanData.loan_amount}
+            onChange={(event) => setUserLoanData({ ...userLoanData, loan_amount: parseFloat(event.target.value) })}
+            className='loan_amount'
+            required
+          />
           <label htmlFor='loan_date'>
             Fecha a conseguir el prestamo
-            <DatePicker
-              selected={userLoanData.loan_date}
-              minDate={new Date()}
-              onChange={handleLoanDateChange}
-              dateFormat='yyy-MM-dd'
-              required
-            />
           </label>
+          <DatePicker
+            selected={userLoanData.loan_date}
+            minDate={new Date()}
+            onChange={handleLoanDateChange}
+            dateFormat='yyy-MM-dd'
+            className='loan_date'
+            required
+          />
           <label htmlFor='loan_weeks'>
             Tiempo a devolver (en semanas)
-            <input
-              type='number'
-              min={1}
-              max={20}
-              step={1}
-              name='loan_weeks'
-              id='loan_weeks'
-              value={userLoanData.loan_weeks}
-              onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: Number(event.target.value) })}
-              required
-            />
           </label>
+          <input
+            type='number'
+            min={1}
+            max={20}
+            step={1}
+            name='loan_weeks'
+            id='loan_weeks'
+            value={userLoanData.loan_weeks}
+            onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: Number(event.target.value) })}
+            className='loan_weeks'
+            required
+          />
           <div>
             <label htmlFor='check-box'>
               <input
@@ -210,6 +219,7 @@ export const Loan = () => {
                 id='check'
                 checked={userLoanData.check}
                 onChange={(event) => setUserLoanData({ ...userLoanData, check: event.target.checked })}
+                className='check-box'
                 required
               />
               Aceptar{' '}
@@ -218,13 +228,18 @@ export const Loan = () => {
                 target='_blank'
                 rel='noreferrer'
               >
-                términos y condiciones
+                Términos y Condiciones
               </a>
             </label>
           </div>
-          <button type='submit'>Enviar Solicitud</button>
+          <button
+            type='submit'
+            className='submit-button'
+          >
+            Enviar Solicitud
+          </button>
         </form>
       )}
-    </div>
+    </main>
   )
 };
