@@ -26,6 +26,8 @@ As an improvement, the code of the form could be splitted in two, create another
 
 Perhaps installing axios library would have given a bit more flexibility when error handling and such.
 
+Unit testing and some E2E testing would have been a plus.
+
 ##### SUGGESTIONS
 
 
