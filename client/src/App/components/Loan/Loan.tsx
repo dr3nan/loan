@@ -52,7 +52,7 @@ export const Loan = () => {
   const handleLoanDateChange = (date: Date) => {
     setUserLoanData({
       ...userLoanData,
-      loan_date: date
+      loan_date: date,
     });
   };
 
