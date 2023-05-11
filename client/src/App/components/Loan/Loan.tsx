@@ -23,14 +23,10 @@ export const Loan = () => {
       const urlParams = new URLSearchParams(window.location.search);
       let userId = Number(urlParams.get('id'));
       userId = 1;
-      // fetch user data from server calling our service endpoint
-      const response = await getUserByID(userId);
-      if (!response) {
-        throw new Error(`${response.status} ${response.code}`);
-      };
+      // create try catch block to handle GET errors
 
-      console.log('response in FE', response.data);
-      // deconstruct response object
+      const response = await getUserByID(userId);
+
       const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
       setUserLoanData({
         id,
@@ -48,7 +44,6 @@ export const Loan = () => {
     fetchUserData();
   }, []);
 
-  // create loan date change handler function
   const handleLoanDateChange = (date: Date) => {
     setUserLoanData({
       ...userLoanData,
@@ -56,17 +51,10 @@ export const Loan = () => {
     });
   };
 
-  // create submit handler function
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const response = await updateUser(userLoanData);
-    console.log('response POST', response);
-    // if (!response) {
-    //   throw new Error(`${response.status} ${response.code}`);
-    // };
-
-    console.log('form submitted');
+    // create try catch block to handle POST errors
+    await updateUser(userLoanData);
   };
 
   return (
