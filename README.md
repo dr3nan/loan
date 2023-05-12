@@ -2,7 +2,7 @@
 
 A simple webapp to inquire a loan with customer details
 
-##### USAGE
+#### USAGE
 
 <u>Prior to anything, you should have Node installed in your machine</u>
 
@@ -60,7 +60,7 @@ If running the app on the provided link
 
 
 
-##### PROCESS
+#### PROCESS
 
 As first step I need to have a roadmap about how I will handle version control, select the preferred platform (GitHub), create the the repo, clone and continue.
 
@@ -78,7 +78,7 @@ I test if the app's behaviour is correct and follows with requirements. Once hap
 
 That's the approache I have taken to create this app.
 
-##### REMARKS
+#### REMARKS
 
 If I would develop the entire app, as fullstack developer, I would also have to consider how the backend would work. I would use a MERN stack since it would be performant and suits this purpose. Following MVC pattern as it would be scalable and easy to maintain.
 
@@ -88,4 +88,4 @@ Installing axios library perhaps would have given more flexibility when error ha
 
 Unit testing and some E2E testing would have been a plus.
 
-##### SUGGESTIONS
+#### SUGGESTIONS
