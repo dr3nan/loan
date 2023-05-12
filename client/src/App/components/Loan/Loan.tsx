@@ -25,35 +25,34 @@ export const Loan = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      // under normal circumstances, uncomment the following lines
-      // this would help to get the user id from the url
-      // const urlParams = new URLSearchParams(window.location.search);
-      // let userId = Number(urlParams.get('id'));
+      const urlParams = new URLSearchParams(window.location.search);
+      const userIdParam = Number(urlParams.get('id'));
+      const userId = userIdParam ? Number(userIdParam) : 0;
 
-      try {
-        // for local testing, change getUserByID(userId) to getUserByID(numero)
-        // valid numbers: 1, 2
-        const response = await getUserByID(1);
-        if (response.status !== 200) {
-          throw new Error(`${response.status} ${response.errors}`)
-        };
+      if (userId !== null && userId !== 0) {
+        try {
+          const response = await getUserByID(userId);
+          if (response.status !== 200) {
+            throw new Error(`${response.status} ${response.errors}`)
+          };
 
-        const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
-        setUserLoanData({
-          id,
-          name,
-          surname,
-          email,
-          phone,
-          age,
-          loan_amount,
-          loan_date: new Date(),
-          loan_weeks,
-          check,
-        });
-        setGetError('');
-      } catch (err: any) {
-        setGetError(`Response error: ${err.message}`);
+          const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
+          setUserLoanData({
+            id,
+            name,
+            surname,
+            email,
+            phone,
+            age,
+            loan_amount,
+            loan_date: new Date(),
+            loan_weeks,
+            check,
+          });
+          setGetError('');
+        } catch (err: any) {
+          setGetError(`Response error: ${err.message}`);
+        }
       }
     };
     fetchUserData();
