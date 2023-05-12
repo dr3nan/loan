@@ -16,7 +16,7 @@ export const Loan = () => {
     age: 0,
     loan_amount: 0,
     loan_date: new Date(),
-    loan_weeks: 0,
+    loan_weeks: 1,
     check: false,
   });
   const [getError, setGetError] = useState<string>('');
@@ -29,7 +29,8 @@ export const Loan = () => {
       let userId = Number(urlParams.get('id'));
 
       try {
-        // for local testing, change getUserByID(1) to getUserByID(userId)
+        // for local testing, change getUserByID(userId) to getUserByID(numero)
+        // numeros validos: 1, 2
         const response = await getUserByID(1);
         if (response.status !== 200) {
           throw new Error(`${response.status} ${response.errors}`)
@@ -70,7 +71,7 @@ export const Loan = () => {
     try {
       const response = await updateUser(userLoanData);
       if (response.status !== 201) {
-        throw new Error(`${response.errors}`)
+        throw new Error(`${response.status} ${response.errors}`)
       };
       setSuccess(true);
       setPostError('');
@@ -168,7 +169,7 @@ export const Loan = () => {
             min={18}
             max={120}
             value={userLoanData.age}
-            onChange={(event) => setUserLoanData({ ...userLoanData, age: Number(event.target.value) })}
+            onChange={(event) => setUserLoanData({ ...userLoanData, age: parseFloat(event.target.value) })}
             className='age'
             required
           />
@@ -209,7 +210,7 @@ export const Loan = () => {
             name='loan_weeks'
             id='loan_weeks'
             value={userLoanData.loan_weeks}
-            onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: Number(event.target.value) })}
+            onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: parseFloat(event.target.value) })}
             className='loan_weeks'
             required
           />
