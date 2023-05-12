@@ -25,12 +25,14 @@ export const Loan = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      let userId = Number(urlParams.get('id'));
+      // under normal circumstances, uncomment the following lines
+      // this would help to get the user id from the url
+      // const urlParams = new URLSearchParams(window.location.search);
+      // let userId = Number(urlParams.get('id'));
 
       try {
         // for local testing, change getUserByID(userId) to getUserByID(numero)
-        // numeros validos: 1, 2
+        // valid numbers: 1, 2
         const response = await getUserByID(1);
         if (response.status !== 200) {
           throw new Error(`${response.status} ${response.errors}`)
