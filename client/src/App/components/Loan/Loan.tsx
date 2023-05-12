@@ -53,8 +53,8 @@ export const Loan = () => {
         } catch (err: any) {
           setGetError(`Response error: ${err.message}`);
         }
-      };
-    }
+      }
+    };
     fetchUserData();
   }, []);
 
