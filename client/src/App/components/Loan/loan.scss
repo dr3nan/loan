@@ -14,6 +14,7 @@
   border-radius: 3px;
   background: v.$color-background-white;
   border: 0 solid v.$color-border-radius;
+  font-family: 'Poppins', sans-serif;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, .15);
 
   .user-details-form {
@@ -36,7 +37,7 @@
       margin-bottom: 0.8rem;
       border: 1px solid v.$color-border-radius;
       padding: 0 0.7rem;
-      font-family: Poppins, sans-serif;
+      font-family: 'Poppins', sans-serif;
       color: v.$color-black-shade-text;
       font-weight: 400;
       font-size: 0.9rem;
@@ -86,7 +87,7 @@
       border-radius: 10px;
       background: v.$color-baby-blue;
       color: v.$color-background-white;
-      font-family: "Poppins", Sans-serif;
+      font-family: 'Poppins', sans-serif;
       font-weight: 600;
       font-size: 1.2rem;
       border-radius: 10px 10px 10px 10px;
