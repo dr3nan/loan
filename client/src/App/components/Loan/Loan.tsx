@@ -181,7 +181,7 @@ export const Loan = () => {
             type='number'
             min={11}
             max={1000}
-            step={1}
+            // step={1}
             name='loan_amount'
             id='loan_amount'
             value={userLoanData.loan_amount}
