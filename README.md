@@ -49,7 +49,7 @@ http://localhost:3000
 # id 1 | 2 = will load both users in db with different details
 ```
 
-If running the app on the provided link: https://loan-form-dr3nan.web.app/partner_test
+If running the app on the provided link: https://loan-form-dr3nan.web.app/partner_test.html
 
 ```bash
 # add
