@@ -1,0 +1,13 @@
+@use '../scss/variables.scss' as v;
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: v.$color-background-light-baby-blue;
+  min-height: 450px;
+  min-width: 200px;
+}

@@ -1,0 +1,103 @@
+@use '../../../scss/variables.scss' as v;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+.form-container {
+  display: flex;
+  height: auto;
+  flex-wrap: wrap;
+  padding: 2rem 0;
+  width: 450px;
+  max-width: 600px;
+  min-width: 270px;
+  font-size: 1.1rem;
+  color: v.$color-black-shade-text;
+  border-radius: 3px;
+  background: v.$color-background-white;
+  border: 0 solid v.$color-border-radius;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .15);
+
+  .user-details-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding: 0 2rem;
+
+    & label {
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+
+    & input {
+      height: 45px;
+      width: 100%;
+      margin-bottom: 0.8rem;
+      border: 1px solid v.$color-border-radius;
+      padding: 0 0.7rem;
+      font-family: Poppins, sans-serif;
+      color: v.$color-black-shade-text;
+      font-weight: 400;
+      font-size: 0.9rem;
+      border-radius: 10px 10px;
+      box-sizing: border-box;
+    }
+
+    .loan_date {
+      cursor: pointer;
+    }
+
+    .checkbox {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      margin-bottom: 0.7rem;
+      justify-content: center;
+
+      >label {
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+
+        >a {
+          margin-left: 0.3rem;
+          color: v.$color-terms-main;
+          cursor: pointer;
+
+          &:hover {
+            color: v.$color-terms-hover;
+            transition: 0.1s ease-in-out;
+          }
+        }
+
+        & input[type="checkbox"] {
+          margin: 0;
+          margin-right: 0.5rem;
+          height: 14px;
+          width: 14px;
+        }
+      }
+    }
+
+    .submit-button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background: v.$color-baby-blue;
+      color: v.$color-background-white;
+      font-family: "Poppins", Sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      border-radius: 10px 10px 10px 10px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .form-container {
+    width: 90%;
+  }
+}
