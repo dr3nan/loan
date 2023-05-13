@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import IUserLoanData from '../../interface/userLoan.interface';
 import { getUserByID, updateUser } from '../../services/api.service';
-import 'react-datepicker/dist/react-datepicker.css';
+
 import './loan.scss';
 import './response.scss';
 import { UserForm } from '../UserForm/UserForm';

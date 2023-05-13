@@ -1,7 +1,15 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import IUserFormProps from '../../interface/props.interface';
 
-export const UserForm = ({ handleSubmit, userLoanData, setUserLoanData, handleLoanDateChange }) => {
+export const UserForm: React.FC<IUserFormProps> = ({
+  handleSubmit,
+  userLoanData,
+  setUserLoanData,
+  handleLoanDateChange,
+}) => {
+
   return (
     <form className='user-details-form'
       onSubmit={handleSubmit}
