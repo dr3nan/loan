@@ -82,7 +82,7 @@ That's the approache I have taken to create this app.
 
 If I would develop the entire app, as fullstack developer, I would also have to consider how the backend would work. I would use a MERN stack since it would be performant and suits this purpose. Following MVC pattern as it would be scalable and easy to maintain.
 
-As an improvement, the code of the form could be splitted in two, create another component that would hold all the JSX for the responses and pass state and functions as props.
+As an improvement, the code of the form could be splitted in two, create another component that would hold all the JSX for the responses and pass state and functions as props. *(accomplished afer initial delivery of the project)*
 
 Installing axios library perhaps would have given more flexibility when error handling and such.
 
