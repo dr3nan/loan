@@ -7,18 +7,22 @@ import IUserLoanData from '../../interface/userLoan.interface';
 export const UserForm: React.FC<IUserFormProps> = ({
   handleSubmit,
   userLoanData,
-  setUserLoanData,
-  // handleLoanDateChange,
 }) => {
   const [initialState, setInitialState] = useState<IUserLoanData>(userLoanData);
-  console.log({ userLoanData });
 
   const isFieldEditable = (field: keyof IUserLoanData) => {
     return userLoanData[field] === '';
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+    const { name, value, checked, type } = event.target;
+    if (type === 'checkbox') {
+      setInitialState((prevState) => ({
+        ...prevState,
+        [name]: checked,
+      }));
+      return;
+    }
     setInitialState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -27,10 +31,10 @@ export const UserForm: React.FC<IUserFormProps> = ({
 
   const handleLoanDateChange = (date: Date | null) => {
     if (date) {
-      setUserLoanData({
-        ...userLoanData,
+      setInitialState((prevState) => ({
+        ...prevState,
         loan_date: date,
-      });
+      }));
     }
   };
   // readOnly attribute has been disabled on some fields as per test request, on normal circumstances
