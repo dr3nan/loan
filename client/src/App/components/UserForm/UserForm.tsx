@@ -1,18 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import IUserFormProps from '../../interface/props.interface';
+import IUserLoanData from '../../interface/userLoan.interface';
 
 export const UserForm: React.FC<IUserFormProps> = ({
   handleSubmit,
   userLoanData,
   setUserLoanData,
-  handleLoanDateChange,
+  // handleLoanDateChange,
 }) => {
+  const [initialState, setInitialState] = useState<IUserLoanData>(userLoanData);
+  console.log({ userLoanData });
 
+  const isFieldEditable = (field: keyof IUserLoanData) => {
+    return userLoanData[field] === '';
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setInitialState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleLoanDateChange = (date: Date | null) => {
+    if (date) {
+      setUserLoanData({
+        ...userLoanData,
+        loan_date: date,
+      });
+    }
+  };
+  // readOnly attribute has been disabled on some fields as per test request, on normal circumstances
+  // it should be enabled if we want to just load the user data and not edit it
   return (
     <form className='user-details-form'
-      onSubmit={handleSubmit}
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleSubmit(initialState);
+      }}
     >
       <label htmlFor='name'>
         Nombre
@@ -21,9 +49,11 @@ export const UserForm: React.FC<IUserFormProps> = ({
         type='text'
         name='name'
         id='name'
-        value={userLoanData.name}
+        value={initialState.name}
         className='name'
-        readOnly
+        readOnly={!isFieldEditable('name')}
+        onChange={handleInputChange}
+        required
       />
       <label htmlFor='surname'>
         Apellido
@@ -32,9 +62,11 @@ export const UserForm: React.FC<IUserFormProps> = ({
         type='text'
         name='surname'
         id='surname'
-        value={userLoanData.surname}
+        value={initialState.surname}
         className='surname'
-        readOnly
+        readOnly={!isFieldEditable('surname')}
+        onChange={handleInputChange}
+        required
       />
       <label htmlFor='email'>
         Email
@@ -43,20 +75,23 @@ export const UserForm: React.FC<IUserFormProps> = ({
         type='email'
         name='email'
         id='email'
-        value={userLoanData.email}
+        value={initialState.email}
         className='email'
-        readOnly
+        readOnly={!isFieldEditable('email')}
+        onChange={handleInputChange}
+        required
       />
       <label htmlFor='phone'>
         Teléfono
       </label>
       <input
-        type='tel'
+        type='number'
         name='phone'
         id='phone'
-        value={userLoanData.phone}
-        onChange={(event) => setUserLoanData({ ...userLoanData, phone: event.target.value })}
+        value={initialState.phone}
         className='phone'
+        // readOnly={!isFieldEditable('phone')}
+        onChange={handleInputChange}
         required
       />
       <label htmlFor='age'>
@@ -68,9 +103,10 @@ export const UserForm: React.FC<IUserFormProps> = ({
         id='age'
         min={18}
         max={120}
-        value={userLoanData.age}
-        onChange={(event) => setUserLoanData({ ...userLoanData, age: parseFloat(event.target.value) })}
+        value={initialState.age}
         className='age'
+        // readOnly={!isFieldEditable('age')}
+        onChange={handleInputChange}
         required
       />
       <label htmlFor='loan_amount'>
@@ -82,16 +118,17 @@ export const UserForm: React.FC<IUserFormProps> = ({
         max={1000}
         name='loan_amount'
         id='loan_amount'
-        value={userLoanData.loan_amount}
-        onChange={(event) => setUserLoanData({ ...userLoanData, loan_amount: parseFloat(event.target.value) })}
+        value={initialState.loan_amount}
         className='loan_amount'
+        // readOnly={!isFieldEditable('loan_amount')}
+        onChange={handleInputChange}
         required
       />
       <label htmlFor='loan_date'>
         Fecha a conseguir el préstamo
       </label>
       <DatePicker
-        selected={userLoanData.loan_date}
+        selected={initialState.loan_date}
         minDate={new Date()}
         onChange={handleLoanDateChange}
         dateFormat='yyy-MM-dd'
@@ -108,9 +145,10 @@ export const UserForm: React.FC<IUserFormProps> = ({
         step={1}
         name='loan_weeks'
         id='loan_weeks'
-        value={userLoanData.loan_weeks}
-        onChange={(event) => setUserLoanData({ ...userLoanData, loan_weeks: parseFloat(event.target.value) })}
+        value={initialState.loan_weeks}
         className='loan_weeks'
+        // readOnly={!isFieldEditable('loan_weeks')}
+        onChange={handleInputChange}
         required
       />
       <div className='checkbox'>
@@ -119,9 +157,9 @@ export const UserForm: React.FC<IUserFormProps> = ({
             type='checkbox'
             name='check'
             id='check'
-            checked={userLoanData.check}
-            onChange={(event) => setUserLoanData({ ...userLoanData, check: event.target.checked })}
+            checked={initialState.check}
             className='checkbox-input'
+            onChange={handleInputChange}
             required
           />
           Aceptar{' '}
@@ -142,4 +180,4 @@ export const UserForm: React.FC<IUserFormProps> = ({
       </button>
     </form>
   )
-}
+};

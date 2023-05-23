@@ -4,72 +4,52 @@ import { getUserByID, updateUser } from '../../services/api.service';
 import './loan.scss';
 import './response.scss';
 import { UserForm } from '../UserForm/UserForm';
+import { useParams } from 'react-router-dom';
 
 export const Loan = () => {
-  const [userLoanData, setUserLoanData] = useState<IUserLoanData>({
-    id: 0,
-    name: '',
-    surname: '',
-    email: '',
-    phone: '',
-    age: 0,
-    loan_amount: 0,
-    loan_date: new Date(),
-    loan_weeks: 1,
-    check: false,
-  });
+  const [userLoanData, setUserLoanData] = useState<IUserLoanData | null>(null);
   const [getError, setGetError] = useState<string>('');
   const [postError, setPostError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
 
+  const idParams = useParams<{ id: string }>();
+  // console.log('file: Loan.tsx:16 ~~> Loan ~~> idParams:', idParams)
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const userIdParam = Number(urlParams.get('id'));
-      const userId = userIdParam ? Number(userIdParam) : 0;
+    const fetchUserData = async (userId: string) => {
+      try {
+        const response = await getUserByID(Number(userId));
+        console.log('response', response.status);
+        if (response.status !== 200) {
+          throw new Error(`${response.status} ${response.errors}`)
+        };
 
-      if (userId !== null && userId !== 0) {
-        try {
-          const response = await getUserByID(userId);
-          if (response.status !== 200) {
-            throw new Error(`${response.status} ${response.errors}`)
-          };
-
-          const { id, name, surname, email, phone, age, loan_amount, loan_date, loan_weeks, check } = await response.data;
-          setUserLoanData({
-            id,
-            name,
-            surname,
-            email,
-            phone,
-            age,
-            loan_amount,
-            loan_date: new Date(),
-            loan_weeks,
-            check,
-          });
-          setGetError('');
-        } catch (err: any) {
-          setGetError(`Response error: ${err.message}`);
-        }
+        const { id, name, surname, email, phone, age, loan_amount, loan_weeks, check } = await response.data;
+        setUserLoanData({
+          id,
+          name: name || '',
+          surname: surname || '',
+          email: email || '',
+          phone: phone || '',
+          age: age || 0,
+          loan_amount: loan_amount || 0,
+          loan_date: new Date(),
+          loan_weeks: loan_weeks || 0,
+          check: check || false,
+        });
+        setGetError('');
+      } catch (err: any) {
+        setGetError(`Response error: ${err.message}`);
       }
     };
-    fetchUserData();
-  }, []);
-
-  const handleLoanDateChange = (date: Date | null) => {
-    if (date) {
-      setUserLoanData({
-        ...userLoanData,
-        loan_date: date,
-      });
+    if (idParams.id) {
+      fetchUserData(idParams.id);
     }
-  };
+  }, [idParams.id]);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (loanData: IUserLoanData) => {
     try {
-      const response = await updateUser(userLoanData);
+      const response = await updateUser(loanData);
       if (response.status !== 201) {
         throw new Error(`${response.status} ${response.errors}`)
       };
@@ -80,6 +60,8 @@ export const Loan = () => {
       setPostError(`Response error: ${err.message}`);
     }
   };
+
+  if (userLoanData === null) return null;
 
   return (
     <main className='form-container'>
@@ -115,7 +97,7 @@ export const Loan = () => {
           handleSubmit={handleSubmit}
           userLoanData={userLoanData}
           setUserLoanData={setUserLoanData}
-          handleLoanDateChange={handleLoanDateChange}
+          // handleLoanDateChange={handleLoanDateChange}
         />
       )}
     </main>

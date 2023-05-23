@@ -13,10 +13,14 @@ export const getUserByID = async (userId: number) => {
         'X-WEB-KEY': 'Development'
       }
     });
-
-    return await response.json();
+    // if (response.status !== 200) {
+    //   throw new Error(`${response.status}`)
+    // };
+    if (response.ok) {
+      return await response.json();
+    };
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
 };
 
@@ -35,9 +39,10 @@ export const updateUser = async (userData: IUserLoanData) => {
         loan_date: formattedLoanDate
       })
     });
-
-    return await response.json();
+    if (response.ok) {
+      return await response.json();
+    };
   } catch (err) {
     console.error(err);
   }
-}
+};

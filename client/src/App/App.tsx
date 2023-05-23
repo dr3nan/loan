@@ -7,7 +7,7 @@ function App() {
   return (
     <div className='App'>
       <Routes>
-        <Route path='/partner_test.html' Component={Loan} />
+        <Route path='/partner_test.html/:id' Component={Loan} />
       </Routes>
     </div>
   );
